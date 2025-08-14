@@ -1,52 +1,42 @@
-# 🌍 Bilingual Dataset Loader for Transformer-based Translation
+# Bilingual Translation Dataset & Configuration for Transformer Models
 
-This repository contains a **PyTorch Dataset** and helper utilities for preparing bilingual datasets for **sequence-to-sequence Transformer models** (such as the "Attention Is All You Need" architecture).  
-It is designed for **machine translation** tasks and covers **tokenization, padding, masking, and config management**.
+Natural Language Processing (NLP) has been revolutionized by the Transformer architecture, introduced in the landmark paper ["Attention Is All You Need"](https://arxiv.org/abs/1706.03762) by Vaswani et al., 2017.  
+The paper demonstrated that attention-based mechanisms could replace recurrent and convolutional structures, enabling faster training, better parallelization, and state-of-the-art performance in sequence-to-sequence tasks like machine translation.
 
----
-
-## 📖 Overview
-
-When training a Transformer for translation (e.g., English → Italian), the model needs:
-1. **Numericalized text** (tokens → IDs)
-2. **Uniform sequence length** (padding or truncation)
-3. **Special tokens** (`[SOS]`, `[EOS]`, `[PAD]`)
-4. **Masks** to control which positions the model attends to  
-   - **Padding masks** so the model ignores `[PAD]` tokens.
-   - **Causal masks** so the decoder can't "see the future".
-
-This project implements:
-- A `BilingualDataset` for preprocessing and batching bilingual text data.
-- Mask creation logic for both encoder and decoder.
-- Config management for training parameters.
-- Utility functions for saving/loading model weights.
+This project implements a **custom bilingual dataset handler** and **training configuration setup** for building Transformer-based models for neural machine translation (NMT).  
+It is designed to be flexible, reproducible, and inspired by the key ideas in the original Transformer paper.
 
 ---
 
-## 🧠 Inspiration
-
-This implementation is heavily inspired by the **Transformer architecture** introduced in the paper:  
-> *Vaswani, A., et al. (2017). "Attention Is All You Need."*  
-> [🔗 Read the paper (arXiv)](https://arxiv.org/abs/1706.03762)
-
-Key elements adopted from the paper:
-- **Encoder–Decoder Structure**  
-  Our `BilingualDataset` prepares `encoder_input` and `decoder_input` exactly as described in the Transformer model for sequence-to-sequence tasks.
-- **Attention Masks**  
-  Implements **causal masks** in the decoder to prevent attention to future tokens (as in the paper’s Figure 1) and **padding masks** to handle variable-length sentences.
-- **Position Handling**  
-  The fixed `seq_len` design ensures compatibility with **positional encoding** (Section 3.5 of the paper).
-- **Teacher Forcing Setup**  
-  `decoder_input` is the target sequence shifted right by one token, following the paper’s training approach.
-
-By following the original Transformer preprocessing principles, this dataset loader ensures that the model receives inputs in the exact format required for optimal attention computation.
+## 📜 Key Concepts from *Attention Is All You Need*
+- **Self-Attention Mechanism** – The model learns relationships between all words in a sequence, regardless of distance.
+- **Encoder-Decoder Structure** – Encodes the source language into a representation, then decodes it into the target language.
+- **Positional Encoding** – Adds order information to token embeddings since attention is order-agnostic.
+- **Causal Masking** – Prevents the model from "peeking ahead" when predicting the next word during decoding.
+- **Parallelism** – Unlike RNNs, the entire sequence is processed simultaneously.
 
 ---
 
-## 📌 Features
+## ✨ Features
 
-### 1️⃣ **`BilingualDataset` Class**
-A PyTorch `Dataset` that:
-- Takes bilingual data in the form:
-  ```python
-  {'translation': {'en': 'Hello world', 'it': 'Ciao mondo'}}
+### 1. **Bilingual Dataset Class**
+A `torch.utils.data.Dataset` subclass (`BilingualDataset`) that:
+- Loads parallel text pairs (`src_lang` → `tgt_lang`).
+- Uses separate tokenizers for source and target languages.
+- Adds special tokens:
+  - **[SOS]** – Start of sequence
+  - **[EOS]** – End of sequence
+  - **[PAD]** – Padding for equal sequence length
+- Ensures fixed-length sequences for both encoder and decoder inputs.
+- Automatically creates **masks** for attention layers:
+  - **Encoder Mask** – Ignores padding tokens in the encoder.
+  - **Decoder Mask** – Combines padding mask with **causal mask** to block future tokens.
+
+---
+
+### 2. **Causal Mask Function**
+Implements a **look-ahead mask** for the decoder:
+```python
+def causal_mask(size):
+    mask = torch.triu(torch.ones((1, size, size)), diagonal=1).type(torch.int)
+    return mask == 0
