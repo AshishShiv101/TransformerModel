@@ -23,6 +23,26 @@ This project implements:
 
 ---
 
+## 🧠 Inspiration
+
+This implementation is heavily inspired by the **Transformer architecture** introduced in the paper:  
+> *Vaswani, A., et al. (2017). "Attention Is All You Need."*  
+> [🔗 Read the paper (arXiv)](https://arxiv.org/abs/1706.03762)
+
+Key elements adopted from the paper:
+- **Encoder–Decoder Structure**  
+  Our `BilingualDataset` prepares `encoder_input` and `decoder_input` exactly as described in the Transformer model for sequence-to-sequence tasks.
+- **Attention Masks**  
+  Implements **causal masks** in the decoder to prevent attention to future tokens (as in the paper’s Figure 1) and **padding masks** to handle variable-length sentences.
+- **Position Handling**  
+  The fixed `seq_len` design ensures compatibility with **positional encoding** (Section 3.5 of the paper).
+- **Teacher Forcing Setup**  
+  `decoder_input` is the target sequence shifted right by one token, following the paper’s training approach.
+
+By following the original Transformer preprocessing principles, this dataset loader ensures that the model receives inputs in the exact format required for optimal attention computation.
+
+---
+
 ## 📌 Features
 
 ### 1️⃣ **`BilingualDataset` Class**
