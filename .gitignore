@@ -1,0 +1,39 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# PyTorch & model weights
+*.pt
+*.pth
+*.bin
+weights/
+opus_books_weig*/
+
+# Training outputs
+runs/
+*.log
+
+# Tokenizer files
+tokenizer_*.json
+
+# Mac/Windows system files
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VSCode settings
+.vscode/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
