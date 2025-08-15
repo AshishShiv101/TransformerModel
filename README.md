@@ -24,9 +24,9 @@ A `torch.utils.data.Dataset` subclass (`BilingualDataset`) that:
 - Loads parallel text pairs (`src_lang` → `tgt_lang`).
 - Uses separate tokenizers for source and target languages.
 - Adds special tokens:  
-  - **[SOS]** – Start of sequence
-  - **[EOS]** – End of sequence
-  - **[PAD]** – Padding for equal sequence length
+  - **[SOS]** – Start of sequence  
+  - **[EOS]** – End of sequence  
+  - **[PAD]** – Padding for equal sequence length  
 - Ensures fixed-length sequences for both encoder and decoder inputs.
 - Automatically creates **masks** for attention layers:
   - **Encoder Mask** – Ignores padding tokens in the encoder.
@@ -34,8 +34,22 @@ A `torch.utils.data.Dataset` subclass (`BilingualDataset`) that:
 
 ---
 
-### 2. **Causal Mask Function**
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/bd09109e-24c6-4ed7-8bc8-15df9ef0a872" alt="Encoder-Decoder Attention" width="75%">
+</p>
+
+---
+
+### 2. **Cross Attention Visualization**
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/8344a080-93d2-43c5-8377-f2275d3011b4" alt="Cross Attention" width="75%">
+</p>
+
+---
+
+### 3. **Causal Mask Function**
 Implements a **look-ahead mask** for the decoder:
+
 ```python
 def causal_mask(size):
     mask = torch.triu(torch.ones((1, size, size)), diagonal=1).type(torch.int)
