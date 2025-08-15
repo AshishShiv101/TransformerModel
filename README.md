@@ -23,7 +23,7 @@ It is designed to be flexible, reproducible, and inspired by the key ideas in th
 A `torch.utils.data.Dataset` subclass (`BilingualDataset`) that:
 - Loads parallel text pairs (`src_lang` → `tgt_lang`).
 - Uses separate tokenizers for source and target languages.
-- Adds special tokens:
+- Adds special tokens:  
   - **[SOS]** – Start of sequence
   - **[EOS]** – End of sequence
   - **[PAD]** – Padding for equal sequence length

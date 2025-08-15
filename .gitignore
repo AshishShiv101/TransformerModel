@@ -3,37 +3,56 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+*.so
 
 # Virtual environment
 .venv/
 env/
 venv/
+ENV/
 
 # PyTorch & model weights
 *.pt
 *.pth
 *.bin
+*.ckpt
 weights/
 opus_books_weig*/
 
-# Training outputs
+# Training outputs & logs
 runs/
+logs/
 *.log
+*.out
+*.err
 
-# Tokenizer files
+# Tokenizer & dataset files
 tokenizer_*.json
+*.dataset
+*.tar.gz
+*.zip
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# VSCode & IDE settings
+.vscode/
+.idea/
 
 # Mac/Windows system files
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# VSCode settings
-.vscode/
-
-# Temporary files
+# Temporary & backup files
 *.tmp
 *.bak
 *.swp
+*.swo
+*~
+
+# Node.js files (if using npm for frontend parts)
+node_modules/
+package-lock.json
+yarn.lock
